@@ -1,5 +1,3 @@
-// sketch.js
-
 let emojis = []; // Array to hold both target and clutter emojis
 let lives = 3; // Number of lives
 let gameState = "start"; // Possible states: "start", "running", "gameOver", "won"
@@ -28,9 +26,9 @@ function setup() {
 
 
 function draw() {
-    background(255);
+    background(255); // Set the background color
     
-    // To change arrow to hand when hovering buttons
+    // Define button and icon positions and dimensions
     let startButtonX = width / 2 - 95;
     let startButtonY = height / 2;
     let startButtonWidth = 200;
@@ -40,13 +38,22 @@ function draw() {
     let shareButtonY = height / 2 + 100;
     let shareButtonWidth = 200;
     let shareButtonHeight = 50;
-    
+
+    let questionMarkX = width - 40;
+    let questionMarkY = 20;
+    let questionMarkSize = 30;
+
+    let resultsButtonX = 30; // X position of the Results button
+    let resultsButtonY = 10; // Y position of the Results button
+    let resultsButtonWidth = 100; // Width of the Results button
+    let resultsButtonHeight = 40; // Height of the Results button
+
+    // Draw game elements
     if (gameState === "running") {
         let gameAreaTop = 60;
         let gameAreaBottom = height-60;
         
-        image(bgImage, 0, gameAreaTop, width, gameAreaBottom - gameAreaTop); // Draw background within game area
-        
+        image(bgImage, 0, gameAreaTop, width, gameAreaBottom - gameAreaTop);
         displayEmojis();
         displaySprites();
         displayUI();
@@ -54,33 +61,67 @@ function draw() {
         if (gameState === "start") {
             displayStartScreen();
         } else if (gameState === "gameOver" || gameState === "won") {
-            // For game over and game won states, check if mouse is over the "Share Results" button
-            if (mouseX > shareButtonX && mouseX < shareButtonX + shareButtonWidth &&
-                mouseY > shareButtonY && mouseY < shareButtonY + shareButtonHeight) {
-                cursor(HAND);
-            } else {
-                cursor(ARROW);
-            }
             if (gameState === "gameOver") {
-                displayGameOver();
-                displayCopyMessage();
-            } else {
-                displayGameWon();
-                displayCopyMessage();
-            }
-        }
+                let gameAreaTop = 60;
+                let gameAreaBottom = height-60;
 
-        // For start screen, check if mouse is over the "Start" button to change arrow to hand
-        if (gameState === "start") {
-            if (mouseX > startButtonX && mouseX < startButtonX + startButtonWidth &&
-                mouseY > startButtonY && mouseY < startButtonY + startButtonHeight) {
-                cursor(HAND);
+                image(bgImage, 0, gameAreaTop, width, gameAreaBottom - gameAreaTop);
+                displayEmojis();
+                displaySprites();
+                displayUI();
+
+                displayGameOver();
             } else {
-                cursor(ARROW);
+                let gameAreaTop = 60;
+                let gameAreaBottom = height-60;
+        
+                image(bgImage, 0, gameAreaTop, width, gameAreaBottom - gameAreaTop);
+                displayEmojis();
+                displaySprites();
+                displayUI();
+
+                displayGameWon();
             }
+            displayCopyMessage();
         }
     }
+
+    // Only draw and check hover for the Results button if the game state allows it
+    if (gameState === "gameOver" || gameState === "won") {
+        drawResultsButton();
+    }
+
+    // Draw question mark
+    drawQuestionMark();
+
+    // Now, correctly call checkHoverAndSetCursor with all necessary parameters
+    checkHoverAndSetCursor(startButtonX, startButtonY, startButtonWidth, startButtonHeight, questionMarkX, questionMarkY, questionMarkSize, shareButtonX, shareButtonY, shareButtonWidth, shareButtonHeight, resultsButtonX, resultsButtonY, resultsButtonWidth, resultsButtonHeight);
 }
+
+// Consolidate hover logic and cursor update in a single function
+function checkHoverAndSetCursor(startButtonX, startButtonY, startButtonWidth, startButtonHeight, questionMarkX, questionMarkY, questionMarkSize, shareButtonX, shareButtonY, shareButtonWidth, shareButtonHeight, resultsButtonX, resultsButtonY, resultsButtonWidth, resultsButtonHeight) {
+    // Check hover over start button
+    let overStartButton = mouseX > startButtonX && mouseX < startButtonX + startButtonWidth && mouseY > startButtonY && mouseY < startButtonY + startButtonHeight;
+
+    // Check hover over share button (only if relevant)
+    let overShareButton = (gameState === "gameOver" || gameState === "won") && mouseX > shareButtonX && mouseX < shareButtonX + shareButtonWidth && mouseY > shareButtonY && mouseY < shareButtonY + shareButtonHeight;
+
+    // Check hover over question mark
+    let overQuestionMark = dist(mouseX, mouseY, questionMarkX, questionMarkY) < questionMarkSize / 2;
+
+    // Check hover over results button
+    let overResultsButton = mouseX > resultsButtonX && mouseX < resultsButtonX + resultsButtonWidth && mouseY > resultsButtonY && mouseY < resultsButtonY + resultsButtonHeight;
+
+    // Set cursor based on hover status
+    if (overStartButton || overShareButton || overQuestionMark || overResultsButton) {
+        cursor(HAND);
+    } else {
+        cursor(ARROW);
+    }
+
+    drawRules();
+}
+
 
 
 function displayUI() {
@@ -151,7 +192,7 @@ function generateEmojis() {
     let clutterPositions = [
         { emoji: '🪐', x: 50, y: 250 },
         { emoji: '☄️', x: 150, y: 600 },
-        { emoji: '🛸', x: 250, y: 500 },
+        { emoji: '🛸', x: 250, y: 380 },
         { emoji: '🛰️', x: 350, y: 400 },
         { emoji: '🚀', x: 100, y: 100 },
         { emoji: '✨', x: 315, y: 715 },
@@ -193,11 +234,14 @@ function generateSprites() {
 }
 
 function displayEmojis() {
+    push();
+    textSize(24);
     emojis.forEach(({ emoji, x, y, found }) => {
         if (!found || clutterEmojis.includes(emoji)) {
             text(emoji, x, y);
         }
     });
+    pop();
 }
 
 function displaySprites() {
@@ -231,36 +275,9 @@ function displayStopwatch() {
     }
 }
 
-function displayGameOver() {
-    fill(0);
-    textSize(48);
-    textAlign(CENTER, CENTER);
-    text("GAME OVER", width / 2, height / 2);
-
-    // Display the locations of the remaining target emojis
-    textSize(24); // Same text size for emojis
-    emojis.forEach(emoji => {
-        if (targetEmojis.includes(emoji.emoji) && !emoji.found) {
-            text(emoji.emoji, emoji.x, emoji.y);
-        }
-    });
-
-    drawButton(); // Share results
-}
-
-function displayGameWon() {
-    fill(0);
-    textSize(48);
-    textAlign(CENTER, CENTER);
-    text("YOU WIN!", width / 2, height / 2 - 100); // Emoji display position
-    textSize(32);
-    text(`Time: ${finalFormattedTime}`, width / 2, height / 2 - 50);
-    displayFoundEmojisWinScreen(); // Ensure foundEmojis are displayed in the order they were found
-
-    drawButton(); // Share results
-}
 
 function displayFoundEmojisWinScreen() {
+    push();
     let emojiDisplaySize = 32; // Set text size for emojis
     textSize(emojiDisplaySize);
     let displayMargin = 10; // Margin between displayed emojis
@@ -278,6 +295,7 @@ function displayFoundEmojisWinScreen() {
         fill('black'); // Set emoji color
         text(emojiObj.emoji, x, startY);
     });
+    pop();
 }
 
 function captureFinalTime() {
@@ -390,8 +408,170 @@ function displayCopyMessage() {
     }
 }
 
+
+function drawQuestionMark() {
+    push(); // Save the current drawing state
+    // Coordinates and size for the question mark icon
+    let iconX = width - 40; // Adjust based on canvas size
+    let iconY = 20;
+    let iconSize = 30;
+
+    // Draw circle background
+    fill(255); // White background
+    stroke(0); // Black border
+    ellipse(iconX, iconY + 10, iconSize, iconSize);
+
+    // Draw question mark
+    fill(0); // Black question mark
+    textSize(20);
+    textAlign(CENTER, CENTER);
+    text('?', iconX, iconY + 10); // Adjust Y to center the question mark
+    pop(); // Restore the drawing state
+}
+
+
+let showRules = false; // Flag to track rules display state
+
+function toggleRulesDisplay() {
+    showRules = !showRules; // Toggle the state
+}
+
+function drawRules() {
+    if (!showRules) return; // If not showing rules, exit function
+
+    push(); // Save the current drawing state
+    // Display settings for the rules box
+    fill(255); // White background
+    stroke(0); // Black border
+    rect(50, 50, width - 100, height - 100, 20); // Adjust size as needed
+
+    // Rules text
+    fill(0); // Black text
+    textSize(20);
+    textAlign(LEFT, TOP);
+    text(`HOW TO PLAY:
+    - Seek the target emojis! (bottom left of screen)
+    - Tap the target emojis. Avoid tapping other items!
+    - You have 3 lives. Tapping wrong items costs a life.
+    - After the game, share your results with friends!`, 60, 300); // Adjust positioning and content
+    pop(); // Restore the drawing state
+}
+
+
+let showGameOverBox = false; // Flag to track game over box display state
+
+function displayGameOver() {
+    let unfoundEmojiPositions = emojis.filter(emoji => !emoji.found && targetEmojis.includes(emoji.emoji)).map(emoji => ({x: emoji.x, y: emoji.y}));
+
+    drawRedCircles(unfoundEmojiPositions);
+
+    if (!showGameOverBox) return; // If not showing game over box, exit function
+
+    let boxHeight = (height / 2); // Adjust the box height here
+    let boxY = (height - boxHeight) / 2; // Center the box vertically
+
+    push(); // Save the current drawing state
+    fill(255); // White background for the box
+    stroke(0); // Black border for the box
+    rect(50, boxY, width - 100, boxHeight, 20); // Adjusted box height and Y position
+
+    fill(0); // Black text
+    textSize(48); // Set the text size for the game over message
+    textAlign(CENTER, CENTER);
+    text("GAME OVER", width / 2, boxY + 150); // Adjust Y position based on the new box position
+
+    // Adjust the Y position where the found emojis are displayed within the game over box
+    displayFoundEmojisWinScreen(); // Ensure this function positions text appropriately within the new box dimensions
+
+    // Adjust the position of the "Share Results" button to fit within the new box dimensions
+    drawButton(); // Share results
+    pop();
+}
+
+let showGameWonBox = false; // Flag to track game over box display state
+
+function displayGameWon() {
+    if (!showGameWonBox) return; // If not showing game over box, exit function
+
+    let boxHeight = (height / 2); // Adjust the box height here
+    let boxY = (height - boxHeight) / 2; // Center the box vertically
+
+    push(); // Save the current drawing state
+    fill(255); // White background for the box
+    stroke(0); // Black border for the box
+    rect(50, boxY, width - 100, boxHeight, 20); // Adjusted box height and Y position
+
+    fill(0); // Black text
+    textSize(48); // Set the text size for the game over message
+    textAlign(CENTER, CENTER);
+    text("YOU WIN!", width / 2, boxY + 50); // Adjust Y position based on the new box position
+
+    textSize(32);
+    text(`Time: ${finalFormattedTime}`, width / 2, height / 2 - 50);
+
+    // Adjust the Y position where the found emojis are displayed within the game over box
+    displayFoundEmojisWinScreen(); // Ensure this function positions text appropriately within the new box dimensions
+
+    // Adjust the position of the "Share Results" button to fit within the new box dimensions
+    drawButton(); // Share results
+    pop();
+}
+
+
 // for screen taps
 function handleInteraction(x, y) {
+    // Check if the game over box is visible
+    if (showGameOverBox) {
+        // Define the game over box boundaries
+        let boxHeight = (height / 2); // Same as defined in displayGameOver
+        let boxY = (height - boxHeight) / 2; // Center the box vertically
+        let boxLeft = 50;
+        let boxRight = width - 50;
+        let boxTop = boxY;
+        let boxBottom = boxY + boxHeight;
+
+        // Check if the click is outside the game over box
+        if (x < boxLeft || x > boxRight || y < boxTop || y > boxBottom) {
+            showGameOverBox = false; // Hide the game over box
+            return; // Prevent further click processing
+        }
+    }
+
+    // Check if the game over box is visible
+    if (showGameWonBox) {
+        // Define the game over box boundaries
+        let boxHeight = (height / 2); // Same as defined in displayGameWon
+        let boxY = (height - boxHeight) / 2; // Center the box vertically
+        let boxLeft = 50;
+        let boxRight = width - 50;
+        let boxTop = boxY;
+        let boxBottom = boxY + boxHeight;
+
+        // Check if the click is outside the game over box
+        if (x < boxLeft || x > boxRight || y < boxTop || y > boxBottom) {
+            showGameWonBox = false; // Hide the game over box
+            return; // Prevent further click processing
+        }
+    }
+
+
+
+
+    // Define the rules box boundaries
+    let rulesBoxLeft = 50;
+    let rulesBoxRight = width - 50;
+    let rulesBoxTop = 50;
+    let rulesBoxBottom = height - 50;
+
+    // Check if the rules box is displayed and the click is outside of it
+    if (showRules && (x < rulesBoxLeft || x > rulesBoxRight || y < rulesBoxTop || y > rulesBoxBottom)) {
+        showRules = false; // Hide the rules box
+        return; // Exit the function to prevent further interaction handling
+    } else if (showRules) {
+        // If the rules box is open and the click is inside, just return to prevent any action
+        return;
+    }
+
     // Define the game area top boundary
     let gameAreaTop = 60; // Adjust this value based on your UI layout
     let gameAreaBottom = height-60;
@@ -427,6 +607,7 @@ function handleInteraction(x, y) {
                         foundTargets++;
                         if (foundTargets === targetEmojis.length) {
                             gameState = "won";
+                            showGameWonBox = true;
                             captureFinalTime();
                         }
                     }
@@ -438,6 +619,7 @@ function handleInteraction(x, y) {
                 lives--;
                 if (lives === 0) {
                     gameState = "gameOver";
+                    showGameOverBox = true;
                     captureFinalTime();
                 }
             }
@@ -454,4 +636,64 @@ function handleInteraction(x, y) {
             shareResults();
         }
     }
+
+    // for help icon
+    // Icon coordinates and size (must match those in drawQuestionMark)
+    let iconX = width - 40;
+    let iconY = 20;
+    let iconSize = 30;
+
+    // Calculate distance from icon center to mouse click
+    let d = dist(x, y, iconX, iconY);
+
+    // Check if click is within icon bounds
+    if (d < iconSize / 2 +10) {
+        // Clicked on question mark, toggle rules display
+        toggleRulesDisplay();
+    }
+
+
+
+    let resultsButtonX = 30;
+    let resultsButtonY = 10;
+    let resultsButtonWidth = 100;
+    let resultsButtonHeight = 40;
+
+    if ((gameState === "gameOver") && x > resultsButtonX && x < resultsButtonX + resultsButtonWidth &&
+        y > resultsButtonY && y < resultsButtonY + resultsButtonHeight) {
+        showGameOverBox = true;
+    }
+    if ((gameState === "gameWon") && x > resultsButtonX && x < resultsButtonX + resultsButtonWidth &&
+    y > resultsButtonY && y < resultsButtonY + resultsButtonHeight) {
+        showGameWonBox = true;
+    }
 }
+
+
+function drawResultsButton() {
+    let buttonX = 30;
+    let buttonY = 10;
+    let buttonWidth = 100;
+    let buttonHeight = 40;
+    fill(0); // Button color
+    rect(buttonX, buttonY, buttonWidth, buttonHeight, 20); // Rounded corners
+    fill(255); // Text color
+    textSize(16);
+    text("Results", buttonX + buttonWidth / 2, buttonY + buttonHeight / 2);
+}
+
+function drawRedCircles(positions) {
+    push(); // Save current drawing settings
+    noFill(); // Ensure the circles aren't filled
+    stroke(255, 0, 0); // Set the stroke color to red
+    strokeWeight(2); // Set the stroke thickness
+    
+    // Iterate through the array of positions and draw a circle at each one
+    for (let pos of positions) {
+      ellipse(pos.x, pos.y, 50, 50); // Draw the circle with a diameter of 100
+    }
+    
+    pop(); // Restore previous drawing settings
+  }
+  
+  
