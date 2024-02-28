@@ -663,7 +663,7 @@ function handleInteraction(x, y) {
         y > resultsButtonY && y < resultsButtonY + resultsButtonHeight) {
         showGameOverBox = true;
     }
-    if ((gameState === "gameWon") && x > resultsButtonX && x < resultsButtonX + resultsButtonWidth &&
+    if ((gameState === "won") && x > resultsButtonX && x < resultsButtonX + resultsButtonWidth &&
     y > resultsButtonY && y < resultsButtonY + resultsButtonHeight) {
         showGameWonBox = true;
     }
