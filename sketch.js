@@ -1,7 +1,7 @@
 let emojis = []; // Array to hold both target and clutter emojis
 let lives = 3; // Number of lives
 let gameState = "start"; // Possible states: "start", "running", "gameOver", "won"
-let targetEmojis = ['👽','👾','👩🏻‍🚀','🧑🏽‍🚀','👨🏿‍🚀']; // Emojis players must find 
+let targetEmojis = ['👽','👾','🌚','🌝','🌞']; // Emojis players must find 
 let clutterEmojis = []; // Clutter emojis
 let foundTargets = 0; // Counter for found target emojis
 let stopwatchStart = false;
@@ -184,9 +184,9 @@ function generateEmojis() {
     let targetPositions = [
         { emoji: '👽', x: 258, y: 230 },
         { emoji: '👾', x: 70, y: 667 },
-        { emoji: '👩🏻‍🚀', x: 310, y: 710 },
-        { emoji: '🧑🏽‍🚀', x: 398, y: 478 },
-        { emoji: '👨🏿‍🚀', x: 50, y: 250 }
+        { emoji: '🌚', x: 310, y: 710 },
+        { emoji: '🌝', x: 398, y: 478 },
+        { emoji: '🌞', x: 50, y: 250 }
     ];
 
     let clutterPositions = [
@@ -207,11 +207,11 @@ function generateEmojis() {
         { emoji: '✨', x: 270, y: 600 },
         { emoji: '⭐️', x: 220, y: 450 },
         { emoji: '🌟', x: 220, y: 220 },
-        { emoji: '🌚', x: 180, y: 250 },
-        { emoji: '🌝', x: 20, y: 510 },
+        { emoji: '👩🏻‍🚀', x: 180, y: 250 },
+        { emoji: '🧑🏽‍🚀', x: 20, y: 510 },
         { emoji: '🌛', x: 390, y: 720 },
         { emoji: '🌜', x: 375, y: 720 },
-        { emoji: '🌞', x: 140, y: 240 },
+        { emoji: '👨🏿‍🚀', x: 140, y: 240 },
     ];
 
     // Add target emojis with their positions
