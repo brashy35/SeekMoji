@@ -504,7 +504,7 @@ function displayGameWon() {
     fill(0); // Black text
     textSize(48); // Set the text size for the game over message
     textAlign(CENTER, CENTER);
-    text("YOU WIN!", width / 2, boxY + 50); // Adjust Y position based on the new box position
+    text("YOU WIN!", width / 2, boxY + 100); // Adjust Y position based on the new box position
 
     textSize(32);
     text(`Time: ${finalFormattedTime}`, width / 2, height / 2 - 50);
