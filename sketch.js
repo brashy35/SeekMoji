@@ -184,7 +184,7 @@ function generateEmojis() {
     let targetPositions = [
         { emoji: '👽', x: 258, y: 230 },
         { emoji: '👾', x: 70, y: 667 },
-        { emoji: '🌚', x: 310, y: 710 },
+        { emoji: '🌚', x: 542, y: 183 },
         { emoji: '🌝', x: 398, y: 478 },
         { emoji: '🌞', x: 50, y: 250 }
     ];
