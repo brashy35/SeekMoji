@@ -13,9 +13,9 @@ let bgImage; // Variable to hold the background image
 let spriteImages = {}; // Object to store loaded images
 
 function preload() {
-    bgImage = loadImage('static/backgrounds/pexels-francesco-ungaro-998641.jpg'); // Background
+    bgImage = loadImage('static/backgrounds/seekmoji1.jpg'); // Background
     spriteImages['red_spaceship'] = loadImage('static/sprites/red_spaceship.png');
-    spriteImages['other_spaceship'] = loadImage('static/sprites/5219396.png');
+    spriteImages['orange_spaceship'] = loadImage('static/sprites/orange_spaceship.png');
 
 }
 
@@ -191,27 +191,27 @@ function generateEmojis() {
 
     let clutterPositions = [
         { emoji: '🪐', x: 50, y: 250 },
-        { emoji: '☄️', x: 150, y: 600 },
+        { emoji: '☄️', x: 550, y: 600 },
         { emoji: '🛸', x: 250, y: 380 },
         { emoji: '🛰️', x: 350, y: 400 },
         { emoji: '🚀', x: 100, y: 100 },
         { emoji: '✨', x: 315, y: 715 },
         { emoji: '⭐️', x: 300, y: 720 },
         { emoji: '🌟', x: 330, y: 725 },
-        { emoji: '✨', x: 75, y: 300 },
+        { emoji: '✨', x: 30, y: 300 },
         { emoji: '⭐️', x: 20, y: 120 },
         { emoji: '🌟', x: 460, y: 650 },
         { emoji: '✨', x: 350, y: 200 },
         { emoji: '⭐️', x: 60, y: 200 },
-        { emoji: '🌟', x: 480, y: 300 },
-        { emoji: '✨', x: 70, y: 560 },
-        { emoji: '⭐️', x: 180, y: 500 },
+        { emoji: '🌟', x: 500, y: 300 },
+        { emoji: '✨', x: 270, y: 600 },
+        { emoji: '⭐️', x: 220, y: 450 },
         { emoji: '🌟', x: 220, y: 220 },
         { emoji: '🌚', x: 180, y: 250 },
-        { emoji: '🌝', x: 20, y: 250 },
+        { emoji: '🌝', x: 20, y: 510 },
         { emoji: '🌛', x: 390, y: 720 },
         { emoji: '🌜', x: 375, y: 720 },
-        { emoji: '🌞', x: 140, y: 290 },
+        { emoji: '🌞', x: 140, y: 240 },
     ];
 
     // Add target emojis with their positions
@@ -228,7 +228,7 @@ function generateEmojis() {
 function generateSprites() {
     sprites = [
         { type: 'red_spaceship', x: 305, y: 450, width: 100, height: 100 },
-        { type: 'other_spaceship', x: 235, y: 570, width: 150, height: 150 },
+        { type: 'orange_spaceship', x: 235, y: 570, width: 150, height: 150 },
 
     ];
 }
