@@ -404,7 +404,7 @@ function displayCopyMessage() {
         fill(0); // Text color
         textSize(16); // Adjust as needed
         textAlign(CENTER, CENTER);
-        text("Results copied to clipboard", messageX, messageY);
+        text("Results copied to clipboard", messageX, messageY-10);
     }
 }
 
