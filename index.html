@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SeekMoji</title>
+  </head>
+  <body>
+    <header id="title">
+      <p>SeekMoji</p>
+    </header>
+
+      <main>
+
+        <div id="topBar">
+          <div class="leftItem">
+            <span id="stopwatch">Time: 0:00</span>
+          </div>
+          <span id="lives">lives</span>
+          <div class="rightItem">
+            <button id="help">HELP</button>
+          </div>
+        </div>
+        
+
+        <div id="rulesModal" class="modal" style="display: none;">
+          <div class="modal-content">
+              <span class="close-button">&times;</span>
+              <h2>Game Rules</h2> <br>
+              <ul>
+                  <li>Seek the hidden targets within the clutter!</li>
+                  <li>Each targets is represented by a unique emoji.</li>
+                  <li>Use your clicks wisely!</li>
+                  <li>Share your results with friends!</li> <br>
+              </ul>
+          </div>
+        </div>
+
+      
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="gameStartScreen" class="modal" style="display: flex;">
+          <div class="modal-content">
+            <h2>Welcome to SeekMoji!</h2>
+            <p>Find all the hidden targets before you run out of lives.</p>
+            <button id="startGameButton">Start Game</button>
+          </div>
+        </div>
+      
+        <div id="gameWinModal" class="modal" style="display: none;">
+          <div class="modal-content">
+              <span class="close-button">&times;</span>
+              <h2>You Win!</h2> <br>
+              <p id="winTime"></p> <br>
+              <p id="winEmojis"></p> <br>
+              <button id="winShareBtn" class="shareBtn">SHARE RESULTS</button> <!-- In the win modal -->
+            </div>
+        </div>
+
+        <div id="gameLoseModal" class="modal" style="display: none;">
+          <div class="modal-content">
+              <span class="close-button">&times;</span>
+              <h2>You Lose!</h2> <br>
+              <p id="loseEmojis"></p> <br>
+              <button id="loseShareBtn" class="shareBtn">SHARE RESULTS</button> <!-- In the lose modal -->
+            </div>
+        </div>
+    
+        <div id="bottomBar">
+          <span id="targetEmojis">targetEmojis</span>
+          <span id="foundEmojis">foundEmojis</span>
+        </div>
+        
+      </main>
+
+      <script type="module" src="/main.js"></script>
+  </body>
+</html>
