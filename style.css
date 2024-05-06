@@ -1,0 +1,49 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0; /* Optional: Change the background color */
+}
+
+canvas {
+    display: block; /* Prevents extra space below the canvas */
+    max-width: 100%; /* Ensures the canvas is not larger than the viewport */
+    border: 1px solid #ddd; /* Optional: Adds a border around the canvas */
+}
+
+/* General styles for UI elements */
+.ui-text {
+    font-size: 1rem; /* Default font size for UI text */
+    text-align: center; /* Center align text */
+}
+
+.ui-button {
+    padding: 10px 20px; /* Padding inside buttons */
+    border: none; /* No border for buttons */
+    background-color: #007bff; /* Example button background color */
+    color: white; /* Text color for buttons */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border-radius: 5px; /* Rounded corners for buttons */
+}
+
+
+/* *****************fixing size issues*********************** */
+/* CSS file */
+#myCanvas {
+    max-width: 100%;
+    max-height: 100vh;
+    aspect-ratio: 3 / 4;
+    display: block;
+    margin: auto;
+}
+
+/* Optional: Ensure the body has no margin for full-screen scaling */
+body, html {
+    margin: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
